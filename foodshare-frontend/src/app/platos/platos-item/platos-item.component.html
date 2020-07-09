@@ -1,0 +1,24 @@
+<div class="card" *ngIf="plato">
+<a [routerLink]="['/platos', plato.id]">
+  <img class="card-img-top" [src]="plato.imagen">
+</a>
+<div class="card-body">
+  <a [routerLink]="['/platos', plato.id]">
+    <h4 class="card-title">{{plato.nombre}}</h4>
+  </a>
+  <p class="card-text">
+    {{plato.descripcion}}
+  </p>
+  <div class="row mr-4 align-items-center">
+    <div class="col">
+      <small>{{plato.creador}}</small>
+    </div>
+  </div>
+</div>
+<div class="card-footer text-muted">
+  Disponible hasta las: <b>{{plato.hora}}</b>
+</div>
+<div class="card-footer text-muted">
+  {{plato.direccion}}
+</div>
+</div>

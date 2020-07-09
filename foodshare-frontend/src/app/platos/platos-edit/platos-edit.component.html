@@ -1,0 +1,82 @@
+<form class="mt-4" (ngSubmit)="editPlato()" #editForm="ngForm" *ngIf="plato">
+  <div class="card-header bg-info text-white mb-2">
+    Editar plato
+  </div>
+  <div class="form-group">
+    <label for="name">Nombre del plato</label>
+    <input type="text" class="form-control" name="name" [(ngModel)]="plato.nombre" placeholder="Introduzca un nombre"
+      minlength="3" maxlength="60" required #nameModel="ngModel"
+      [ngClass]="validClasses(nameModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="nameModel.errors && nameModel.errors.required">
+      El campo 'Nombre' no puede estar vacío.
+    </div>
+    <div class="invalid-feedback"
+      *ngIf="nameModel.errors && (nameModel.errors.minlength || nameModel.errors.maxlength)">
+      Se requiere un nombre de entre 3 y 60 caracteres.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Descripción</label>
+    <textarea class="form-control" name="description" rows="3" [(ngModel)]="plato.descripcion"
+      placeholder="Introduzca una descripción" maxlength="250" required #descModel="ngModel"
+      [ngClass]="validClasses(descModel, 'is-valid', 'is-invalid')"></textarea>
+    <small class="form-text text-muted">Caracteres: {{descModel.value.length}}/250</small>
+    <div class="invalid-feedback">
+      El campo 'Descripción' no puede estar vacío.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="creator">Cocinero/a</label>
+    <input type="text" class="form-control" name="creator" [(ngModel)]="plato.creador"
+      placeholder="Introduzca su nombre" minlength="3" maxlength="30" required #creatorModel="ngModel"
+      [ngClass]="validClasses(creatorModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="creatorModel.errors && creatorModel.errors.required">
+      El campo 'Creador' no puede estar vacío.
+    </div>
+    <div class="invalid-feedback"
+      *ngIf="creatorModel.errors && (creatorModel.errors.minlength || creatorModel.errors.maxlength)">
+      Se requiere un nombre de entre 3 y 30 caracteres.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="timeActual">Hora máxima de recogida actual</label>
+    <input type="text" class="form-control" name="timeActual" [(ngModel)]="plato.hora" required readonly
+      #timeModel="ngModel" [ngClass]="validClasses(timeModel, 'is-valid', 'is-invalid')">
+  </div>
+
+  <div class="form-group">
+    <label for="time">Nueva hora máxima de recogida (si no se indica una nueva o válida, se usará la actual)</label>
+    <input type="time" class="form-control" name="time" [(ngModel)]="timeForm">
+  </div>
+
+  <div class="form-group">
+    <label for="image">Imagen del plato</label>
+    <input type="file" class="form-control" name="image" [(ngModel)]="archivo" #fileImage
+      (change)="changeImage(fileImage)">
+  </div>
+  <img [src]="plato.imagen" alt="" class="img-thumbnail">
+
+  <div class="form-group">
+    <mgl-map class="mt-4" [style]="'mapbox://styles/mapbox/streets-v11'" [zoom]="[zoom]" [center]="[plato.longitud, plato.latitud]">
+      <mgl-marker [lngLat]="[plato.longitud, plato.latitud]"></mgl-marker>
+      <mgl-control mglGeocoder (result)="changePosition($event.result)">
+      </mgl-control>
+    </mgl-map>
+    <label for="adress">Lugar de recogida (Escriba y seleccione una dirección en el mapa. Si no selecciona ninguna, se
+      guardará la siguiente):</label>
+    <input type="text" class="form-control" name="adress" [(ngModel)]="plato.direccion" minlength="5" required readonly
+      #adressModel="ngModel" [ngClass]="validClasses(adressModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="adressModel.errors && adressModel.errors.required">
+      El campo 'Dirección' no puede estar vacío.
+    </div>
+    <div class="invalid-feedback" *ngIf="adressModel.errors && adressModel.errors.minlength">
+      Se requiere una dirección de al menos 5 caracteres.
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-info mb-4 mt-4" [disabled]="editForm.invalid || !plato.imagen">Editar
+    entrada</button>
+</form>

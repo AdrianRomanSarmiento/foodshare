@@ -1,0 +1,13 @@
+mgl-map {
+  height: 300px;
+  width: 500px;
+ }
+
+.card-img-top {
+  height: 240px;
+  width: 240px;
+}
+
+.mapdiv {
+  padding-left: 28%;
+}

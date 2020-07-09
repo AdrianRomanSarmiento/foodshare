@@ -1,0 +1,14 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" [routerLink]="['/welcome']"><i class="fas fa-utensils mr-2"></i>{{title}}</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/welcome']" [routerLinkActive]="['active']">¡Bienvenido/a!</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/platos']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true }">Platos</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/platos/add']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true }">Compartir un plato</a>
+    </li>
+  </ul>
+</nav>

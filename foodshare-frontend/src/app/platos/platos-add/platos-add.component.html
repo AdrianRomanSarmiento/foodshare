@@ -1,0 +1,75 @@
+<form class="mt-4" (ngSubmit)="addPlato()" #addPlatosForm="ngForm">
+  <div class="form-group">
+    <label for="name">Nombre del plato</label>
+    <input type="text" class="form-control" name="name" [(ngModel)]="newPlato.nombre" placeholder="Introduzca un nombre"
+      minlength="3" maxlength="60" required #nameModel="ngModel" [ngClass]="validClasses(nameModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="nameModel.errors && nameModel.errors.required">
+      El campo 'Nombre' no puede estar vacío.
+    </div>
+    <div class="invalid-feedback" *ngIf="nameModel.errors && (nameModel.errors.minlength || nameModel.errors.maxlength)">
+      Se requiere un nombre de entre 3 y 60 caracteres.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Descripción</label>
+    <textarea class="form-control" name="description" rows="3" [(ngModel)]="newPlato.descripcion"
+      placeholder="Introduzca una descripción" maxlength="250" required #descModel="ngModel"
+      [ngClass]="validClasses(descModel, 'is-valid', 'is-invalid')"></textarea>
+      <small class="form-text text-muted">Caracteres: {{descModel.value.length}}/250</small>
+    <div class="invalid-feedback">
+      El campo 'Descripción' no puede estar vacío.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="creator">Cocinero/a</label>
+    <input type="text" class="form-control" name="creator" [(ngModel)]="newPlato.creador"
+      placeholder="Introduzca su nombre" minlength="3" maxlength="30" required #creatorModel="ngModel"
+      [ngClass]="validClasses(creatorModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="creatorModel.errors && creatorModel.errors.required">
+      El campo 'Creador' no puede estar vacío.
+    </div>
+    <div class="invalid-feedback" *ngIf="creatorModel.errors && (creatorModel.errors.minlength || creatorModel.errors.maxlength)">
+      Se requiere un nombre de entre 3 y 30 caracteres.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="time">Hora máxima de recogida</label>
+    <input type="time" class="form-control" name="time" [(ngModel)]="timeForm" required #timeModel="ngModel"
+      [ngClass]="validClasses(timeModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="timeModel.errors && timeModel.errors.required">
+      El campo 'Hora de máxima de recogida' no puede estar vacío.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="image">Imagen del plato</label>
+    <input type="file" class="form-control" name="image" [(ngModel)]="archivo" #fileImage
+      (change)="changeImage(fileImage)" required #imgModel="ngModel"
+      [ngClass]="validClasses(imgModel, 'is-valid', 'is-invalid')">
+  </div>
+  <img [src]="newPlato.imagen" alt="" class="img-thumbnail">
+
+  <div class="form-group">
+    <mgl-map [style]="'mapbox://styles/mapbox/streets-v11'" [zoom]="[zoom]" [center]="[lng, lat]">
+      <mgl-marker [lngLat]="[lng, lat]"></mgl-marker>
+      <mgl-control mglGeocoder (result)="changePosition($event.result)">
+      </mgl-control>
+    </mgl-map>
+    <label for="adress">Lugar de recogida (Escriba y seleccione una dirección en el mapa):</label>
+    <input type="text" class="form-control" name="adress" [(ngModel)]="newPlato.direccion"
+      minlength="5" required readonly #adressModel="ngModel"
+      [ngClass]="validClasses(adressModel, 'is-valid', 'is-invalid')">
+    <div class="invalid-feedback" *ngIf="adressModel.errors && adressModel.errors.required">
+      El campo 'Dirección' no puede estar vacío.
+    </div>
+    <div class="invalid-feedback" *ngIf="adressModel.errors && adressModel.errors.minlength">
+      Se requiere una dirección de al menos 5 caracteres.
+    </div>
+  </div>
+
+  <button type="submit" class="mb-4 btn btn-info" [disabled]="addPlatosForm.invalid || !newPlato.imagen">¡Compartir
+    plato!</button>
+</form>
